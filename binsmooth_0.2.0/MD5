@@ -1,0 +1,15 @@
+29cbf0aaefa92ed1f2b8339fa9724e0e *DESCRIPTION
+11fcc18229d1926590c9d08f219c5132 *LICENSE
+1e32880d420021b43570b02ebd8ee747 *NAMESPACE
+718b18f72622950c7b2295e16059284c *R/rsubbins.R
+0b0f11381b6ae0594fec5136eeecb050 *R/simcounty.R
+98fd59c90b830afaf4e0d9c7b17aa00d *R/splinebins.R
+623bfeaff9a308954638e90d80276b18 *R/stepbins.R
+5237fa31e1d511ca7ead04d6f771f08c *data/county_bins.rda
+47e7d5dc78ca0d9cbd9c8d105b2b2090 *data/county_true.rda
+d668f119a683e0b3b0ab2a3da9517394 *man/county_bins.Rd
+84a042f94329da7f1240919fd887bb33 *man/county_true.Rd
+143c3aea13378d084527eb3398a3bce2 *man/rsubbins.Rd
+99495f9813d6057a0ac352e8ab92187d *man/simcounty.Rd
+bd92a9fcc194aaaf34d52dba32bd68b5 *man/splinebins.Rd
+c66af3ca0a5304d0fdea1a54229ca5da *man/stepbins.Rd
