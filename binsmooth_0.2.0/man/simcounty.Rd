@@ -36,7 +36,7 @@ Returns a list of two data frames:
 \item{county_true}{Statistics computed from the raw data}
 }
 \references{
-Hunter, D., Drown, M., and von Hippel, P. (2016) \emph{Optimized smoothing techniques for binned data}, in preparation.
+Paul T. von Hippel, David J. Hunter, McKalie Drown. \emph{Better Estimates from Binned Income Data: Interpolated CDFs and Mean-Matching}, Sociological Science, November 15, 2017. \url{https://www.sociologicalscience.com/articles-v4-26-641/}
 }
 \author{
 David J. Hunter and McKalie Drown

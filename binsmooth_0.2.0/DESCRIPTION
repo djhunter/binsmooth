@@ -1,7 +1,7 @@
 Package: binsmooth
 Type: Package
 Title: Generate PDFs and CDFs from Binned Data
-Version: 0.1.0
+Version: 0.2.0
 Author: David J. Hunter and McKalie Drown
 Maintainer: Dave Hunter <dhunter@westmont.edu>
 Description: Provides several methods for generating density functions
