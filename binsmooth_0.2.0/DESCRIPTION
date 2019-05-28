@@ -17,6 +17,3 @@ License: MIT + file LICENSE
 Imports: stats, pracma, ineq, triangle
 LazyData: TRUE
 NeedsCompilation: no
-Packaged: 2016-08-12 14:09:50 UTC; dhunter
-Repository: CRAN
-Date/Publication: 2016-08-12 16:46:49
