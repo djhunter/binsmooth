@@ -17,3 +17,4 @@ License: MIT + file LICENSE
 Imports: stats, pracma, ineq, triangle
 LazyData: TRUE
 NeedsCompilation: no
+RoxygenNote: 6.1.1

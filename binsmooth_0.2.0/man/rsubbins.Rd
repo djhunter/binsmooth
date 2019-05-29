@@ -52,6 +52,8 @@ The decay ratio for the tail bins. Ignored unless \code{tailShape} equals \code{
 }
 \details{
 First, a step function PDF is created, as described in \code{\link{stepbins}}. The bins of the resulting PDF are then recursively subdivided and shifted in a manner that preserves the area of the original bins, resulting in a step function with finer bins.
+
+The methods \code{\link{stepbins}} and \code{\link{rsubbins}} are included in this package mainly for the purpose of comparison. For most use cases, \code{\link{splinebins}} will produce more accurate smoothing results.
 }
 \value{
 Returns a list with the following components.
@@ -72,7 +74,7 @@ David J. Hunter and McKalie Drown
 binedges <- c(10000,15000,20000,25000,30000,35000,40000,45000,
               50000,60000,75000,100000,125000,150000,200000,NA)
 bincounts <- c(157532,97369,102673,100888,90835,94191,87688,90481,
-               79816,153581,195430,240948,155139,9452,92166,103217)
+               79816,153581,195430,240948,155139,94527,92166,103217)
 rsb <- rsubbins(binedges, bincounts, 76091, tailShape="pareto")
 
 plot(rsb$rsubPDF, do.points=FALSE)

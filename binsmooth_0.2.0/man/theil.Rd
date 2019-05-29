@@ -1,13 +1,13 @@
-\name{gini}
-\alias{gini}
+\name{theil}
+\alias{theil}
 \title{
-Estimate the Gini coefficient
+Estimate the Theil index
 }
 \description{
-Estimates the Gini coefficient from a smoothed distribution.
+Estimates the Theil index from a smoothed distribution.
 }
 \usage{
-gini(binFit)
+theil(binFit)
 }
 \arguments{
   \item{binFit}{
@@ -15,12 +15,12 @@ A list as returned by \code{\link{splinebins}}, \code{\link{stepbins}}, or \code
 }
 }
 \details{
-For distributions of non-negative support, the Gini coefficient can be computed from a cumulative distribution function \eqn{F(x)} by the integral
-\deqn{G = 1 - \frac{1}{\mu}\int_0^\infty (1-F(x))^2 \, dx}
+For distributions of non-negative support, the Theil index can be computed from a probability density function \eqn{f(x)} by the integral
+\deqn{T = \int_0^\infty f(x) \frac{x}{\mu} \ln\left(\frac{x}{\mu}\right) \, dx}{T = \int_0^\infty f(x) (x/\mu) \ln(x/\mu) \, dx}
 where \eqn{\mu} is the mean of the distribution.
 }
 \value{
-Returns the Gini coefficient \eqn{G}.
+Returns the Theil index \eqn{T}.
 }
 \references{
 Paul T. von Hippel, David J. Hunter, McKalie Drown. \emph{Better Estimates from Binned Income Data: Interpolated CDFs and Mean-Matching}, Sociological Science, November 15, 2017. \url{https://www.sociologicalscience.com/articles-v4-26-641/}
@@ -37,7 +37,7 @@ bincounts <- c(157532,97369,102673,100888,90835,94191,87688,90481,
                79816,153581,195430,240948,155139,94527,92166,103217)
 stepfit <- stepbins(binedges, bincounts, 76091)
 splinefit <- splinebins(binedges, bincounts, 76091)
-gini(stepfit)
-gini(splinefit) # More accurate
+theil(stepfit)
+theil(splinefit) # More accurate
 }
 

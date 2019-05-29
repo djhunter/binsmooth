@@ -43,11 +43,15 @@ splinebins <- function(bEdges, bCounts, m=NULL, numIterations=16, monoMethod=c("
         l <- tailEnd
     }
   }
+  finv <- splinefun(y,x, method=monoMethod, ties = min) # ADDED in v0.2.0: approximate inverse CDF
   splineCDF <- function(x){
     ifelse(x<0, 0, ifelse(x>tailEnd, 1, f(x)))
   }
   splinePDF <- function(x){
     ifelse(x<0 | x>tailEnd, 0, f(x,deriv=1))
   }
-  return(list(splinePDF=splinePDF, splineCDF=splineCDF, E=tailEnd, est_mean=est_mean, shrinkFactor=shrinkFactor))
+  splineInvCDF <- function(x){ # ADDED in v0.2.0: approximate inverse CDF
+    ifelse(x<0, 0, ifelse(x>1, tailEnd, finv(x)))
+  }
+  return(list(splinePDF=splinePDF, splineCDF=splineCDF, E=tailEnd, est_mean=est_mean, shrinkFactor=shrinkFactor, splineInvCDF=splineInvCDF))
 }

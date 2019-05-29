@@ -8,6 +8,7 @@ simcounty <- function(numCounties, minPop=1000, maxPop=100000,
   mean_true <- numeric(numCounties)
   median_true <- numeric(numCounties)
   gini_true <- numeric(numCounties)
+  theil_true <- numeric(numCounties)
   numRows <- numBins*numCounties
   #variables for county_bins data frame
   # later: fips <- rep(fips, each=numBins)
@@ -58,9 +59,10 @@ simcounty <- function(numCounties, minPop=1000, maxPop=100000,
     mean_true[countyI] <- mean(simPopSamp)
     median_true[countyI] <- median(simPopSamp)
     gini_true[countyI] <- ineq::Gini(simPopSamp, corr=TRUE)
+    theil_true[countyI] <- ineq::Theil(simPopSamp)
     countyI <- countyI + 1
   } #end of for countyI loop
-  county_true <- data.frame(fips, mean_true, median_true, gini_true)
+  county_true <- data.frame(fips, mean_true, median_true, gini_true, theil_true)
   fips <- rep(fips, each=numBins)
   county_bins <- data.frame(fips,households,bin_min,bin_max,county,state)
   return(list(county_bins=county_bins, county_true=county_true))

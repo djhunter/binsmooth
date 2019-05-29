@@ -35,6 +35,7 @@ Returns a list with the following components.
 \item{splineCDF}{A piecewise-cubic function giving the CDF.}
 \item{E}{The right-hand endpoint of the support of the PDF.}
 \item{shrinkFactor}{If the supplied estimate for the mean is too small to be fitted with our method, the bins edges will be scaled by \code{shrinkFactor}, which will be chosen less than (and close to) 1.}
+\item{splineInvCDF}{A pseudo-inverse of \code{splineCDF}.}
 }
 \references{
 Paul T. von Hippel, David J. Hunter, McKalie Drown. \emph{Better Estimates from Binned Income Data: Interpolated CDFs and Mean-Matching}, Sociological Science, November 15, 2017. \url{https://www.sociologicalscience.com/articles-v4-26-641/}
@@ -48,7 +49,7 @@ David J. Hunter and McKalie Drown
 binedges <- c(10000,15000,20000,25000,30000,35000,40000,45000,
               50000,60000,75000,100000,125000,150000,200000,NA)
 bincounts <- c(157532,97369,102673,100888,90835,94191,87688,90481,
-               79816,153581,195430,240948,155139,9452,92166,103217)
+               79816,153581,195430,240948,155139,94527,92166,103217)
 sb <- stepbins(binedges, bincounts, 76091)
 splb <- splinebins(binedges, bincounts, 76091)
 
