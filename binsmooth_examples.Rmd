@@ -1,0 +1,13 @@
+---
+title: "Binsmooth version 0.2.0 Examples"
+author: "David J. Hunter"
+date: "May 29, 2019"
+output: html_document
+---
+
+```{r}
+library(binsmooth)
+library(devtools)
+run_examples("binsmooth_0.2.0")
+```
+
