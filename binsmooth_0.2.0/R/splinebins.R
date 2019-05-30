@@ -43,7 +43,9 @@ splinebins <- function(bEdges, bCounts, m=NULL, numIterations=16, monoMethod=c("
         l <- tailEnd
     }
   }
-  finv <- splinefun(y,x, method=monoMethod, ties = min) # ADDED in v0.2.0: approximate inverse CDF
+  xfix <- seq(0, tailEnd, length.out = 200) # ADDED in v0.2.0: sample CDF to invert
+  yfix <- f(xfix)
+  finv <- splinefun(yfix, xfix, method=monoMethod) # ADDED in v0.2.0: approximate inverse CDF
   splineCDF <- function(x){
     ifelse(x<0, 0, ifelse(x>tailEnd, 1, f(x)))
   }

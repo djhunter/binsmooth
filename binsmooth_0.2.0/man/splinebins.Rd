@@ -35,7 +35,7 @@ Returns a list with the following components.
 \item{splineCDF}{A piecewise-cubic function giving the CDF.}
 \item{E}{The right-hand endpoint of the support of the PDF.}
 \item{shrinkFactor}{If the supplied estimate for the mean is too small to be fitted with our method, the bins edges will be scaled by \code{shrinkFactor}, which will be chosen less than (and close to) 1.}
-\item{splineInvCDF}{A pseudo-inverse of \code{splineCDF}.}
+\item{splineInvCDF}{An approximate inverse of \code{splineCDF}.}
 }
 \references{
 Paul T. von Hippel, David J. Hunter, McKalie Drown. \emph{Better Estimates from Binned Income Data: Interpolated CDFs and Mean-Matching}, Sociological Science, November 15, 2017. \url{https://www.sociologicalscience.com/articles-v4-26-641/}
@@ -59,7 +59,7 @@ plot(sb$stepPDF, do.points=FALSE, col="gray", add=TRUE)
 
 library(pracma)
 integral(splb$splinePDF, 0, splb$E)
-integral(function(x){1-splb$splineCDF(x)}, 0, splb$E)
+integral(function(x){1-splb$splineCDF(x)}, 0, splb$E) # should be the mean
 splb <- splinebins(binedges, bincounts, 76091, numIterations=20)
 integral(function(x){1-splb$splineCDF(x)}, 0, splb$E) # closer to given mean
 }

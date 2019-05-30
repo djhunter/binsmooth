@@ -18,7 +18,7 @@ A vector of percentages in the range \eqn{0 \le p \le 100}.
 }
 }
 \details{
-The pseudo-inverse of the CDF calculated by \code{\link{splinebins}} is used to approximate percentiles of the smoothed distribution.
+The approximate inverse of the CDF calculated by \code{\link{splinebins}} is used to approximate percentiles of the smoothed distribution.
 }
 \value{
 A vector of percentiles.

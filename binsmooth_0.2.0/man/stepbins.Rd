@@ -73,7 +73,7 @@ plot(sbpt$stepPDF, do.points=FALSE)
 plot(sb$stepCDF, 0, sb$E+100000)
 
 library(pracma)
-integral(sb$stepPDF, 0, sb$E)
-integral(function(x){1-sb$stepCDF(x)}, 0, sb$E)
+integral(sb$stepPDF, 0, sb$E) # should be approximately 1
+integral(function(x){1-sb$stepCDF(x)}, 0, sb$E) # should be the mean
 }
 
