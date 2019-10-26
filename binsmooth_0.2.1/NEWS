@@ -1,0 +1,16 @@
+Changes in Version 0.2.0
+========================
+
+New features:
+
+* Added functions to compute the Gini and Theil coefficients from the smoothed distributions, along with other descriptive statistics.
+* Added Theil index to simulated county_true data.
+* Added inverse CDF to the list that splinebins returns.
+* Added functions for computing percentiles and random samples from a splinebins fit.
+* Added NEWS file.
+
+Updates:
+
+* Updated references to the paper in Sociological Science: https://www.sociologicalscience.com/articles-v4-26-641/
+* Updated documentation.
+* Fixed typo in bincounts for Cook County in documentation.

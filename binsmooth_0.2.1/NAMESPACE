@@ -1,0 +1,4 @@
+exportPattern("^[[:alpha:]]+")
+importFrom("stats", "approxfun", "stepfun", "splinefun", "rlnorm", "rweibull", "rgamma", "median")
+importFrom("ineq", "Gini")
+importFrom("triangle", "rtriangle")
