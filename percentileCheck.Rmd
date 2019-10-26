@@ -1,0 +1,92 @@
+---
+title: "Problem with median for South Africa data"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## First check the median bin
+
+```{r}
+library(binsmooth)
+binmax <-  c(1, 4800, 9600, 19200, 38400, 76800, 153600, 307200, 614400, 1228800, 2457600, NA) 
+bincounts <- c(663, 142, 209, 673, 1047, 977, 685, 287,  67, 3, 5, 1) #The number of household for each  bin
+median_bin <- which(cumsum(bincounts) > sum(bincounts)/2)[1]
+cat("Median should be between", binmax[median_bin-1], "and", binmax[median_bin], "\n")
+```
+
+## Median is way off
+
+```{r}
+splb <- splinebins(binmax, bincounts)
+median_income <- sb_percentiles(splb, p = 50) #Get median
+median_income
+```
+
+Things are slightly better if you change the spline method, but not much.
+
+```{r}
+splb <- splinebins(binmax, bincounts, monoMethod = "monoH.FC")
+median_income <- sb_percentiles(splb, p = 50) #Get median
+median_income
+```
+
+The upper bound of the tail is clearly nonsense.
+
+```{r}
+splb <- splinebins(binmax, bincounts)
+cat("Upper bound of support of PDF", splb$E, "\n")
+plot(splb$splinePDF, 0, splb$E)
+```
+
+Since the bin width doubles with each bin, I wonder if taking the log would make things behave better. Nope.
+
+```{r}
+lbinmax <- log(binmax)
+lsplb <- splinebins(lbinmax, bincounts)
+lmedian_income <- sb_percentiles(lsplb, p = 50)
+cat("Estimated median:", exp(lmedian_income))
+```
+
+Instead of making the first bin start at 1, let's just put the zero income people into the second bin and not use the first bin.
+
+```{r}
+binmax <-  c(4800, 9600, 19200, 38400, 76800, 153600, 307200, 614400, 1228800, 2457600, NA) 
+bincounts <- c(663+142, 209, 673, 1047, 977, 685, 287,  67, 3, 5, 1) #The number of household for each  bin
+median_bin <- which(cumsum(bincounts) > sum(bincounts)/2)[1]
+cat("Median should be between", binmax[median_bin-1], "and", binmax[median_bin], "\n")
+splb <- splinebins(binmax, bincounts)
+median_income <- sb_percentiles(splb, p = 50) #Get median
+cat("Splined median:", median_income, "\n")
+lbinmax <- log(binmax)
+lsplb <- splinebins(lbinmax, bincounts)
+lmedian_income <- sb_percentiles(lsplb, p = 50)
+cat("Estimated median using logs:", exp(lmedian_income-1))
+```
+
+```{r}
+library(pracma)
+binmax <-  c(1, 4800, 9600, 19200, 38400, 76800, 153600, 307200, 614400, 1228800, 2457600, NA) 
+bincounts <- c(663, 142, 209, 673, 1047, 977, 685, 287,  67, 3, 5, 1) #The number of household for each  bin
+sb <- stepbins(binmax, bincounts)
+plot(sb$stepPDF, do.points = FALSE)
+integral(sb$stepPDF, 0, sb$E) # should be approximately 1
+integral(function(x){1-sb$stepCDF(x)}, 0, sb$E) # should be the mean
+```
+
+Let's see if these bin counts work for more uniform bins.
+
+```{r}
+binmax <-  c(10000,15000,20000,25000,30000,35000,40000,45000,50000,60000,NA)
+bincounts <- c(663+142, 209, 673, 1047, 977, 685, 287,  67, 3, 5, 1) #The number of household for each  bin
+median_bin <- which(cumsum(bincounts) > sum(bincounts)/2)[1]
+cat("Median should be between", binmax[median_bin-1], "and", binmax[median_bin], "\n")
+splb <- splinebins(binmax, bincounts)
+median_income <- sb_percentiles(splb, p = 50) #Get median
+cat("Splined median:", median_income, "\n")
+plot(splb$splinePDF, 0, 100000)
+```
+
+
