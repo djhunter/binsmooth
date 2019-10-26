@@ -17,7 +17,7 @@ A vector \eqn{e_1, e_2, \ldots, e_n} giving the right endpoints of each bin. The
   \item{bCounts}{
 A vector \eqn{c_1, c_2, \ldots, c_n} giving the counts for each bin (i.e., the number of data elements in each bin). Assumed to be nonnegative.}
   \item{m}{
-An estimate for the mean of the distribution. If no value is supplied, the mean will be estimated by (temporarily) setting \eqn{e_n} equal to \eqn{2e_{n-1}}.
+An estimate for the mean of the distribution. If no value is supplied, the mean will be estimated by (temporarily) setting \eqn{e_n} equal to \eqn{2e_{n-1}}, and a warning message will be generated.
 }
   \item{numIterations}{
 The number of iterations performed by a binary search that optimizes the CDF to fit the mean.

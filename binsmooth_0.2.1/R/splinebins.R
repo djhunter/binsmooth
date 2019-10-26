@@ -1,9 +1,13 @@
 splinebins <- function(bEdges, bCounts, m=NULL, numIterations=16, monoMethod=c("hyman", "monoH.FC")) {
   monoMethod <- match.arg(monoMethod)
   L <- length(bCounts)
+  if(!(is.na(bEdges[L]) | is.infinite(bEdges[L])))
+    warning("Top bin is bounded. Expect inaccurate results.\n")
   tot <- sum(bCounts)
-  if(is.null(m))  # no mean provided, so make one up
+  if(is.null(m)) { # no mean provided, so make one up
+    warning("No mean provided: expect inaccurate results.\n")
     m <- sum(0.5*(c(bEdges[1:(L-1)],2.0*bEdges[L-1])+c(0, bEdges[1:(L-1)]))*bCounts/tot)
+  } 
   sumbAreas <- vapply(1:L, function(i) {sum(bCounts[1:i])/tot}, numeric(1))
   tailEnd <- 1.05*bEdges[L-1] # start with a really short tail
   x <- c(0, bEdges[1:(L-1)], tailEnd, tailEnd*1.01)

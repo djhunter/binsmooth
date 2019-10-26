@@ -1,8 +1,11 @@
 rsubbins <- function(bEdges, bCounts, m=NULL, eps1 = 0.25, eps2 = 0.75, depth = 3,
                      tailShape = c("onebin", "pareto", "exponential"),
                      nTail=16, numIterations=20, pIndex=1.160964, tbRatio=0.8) {
+  L <- length(bCounts)
+  if(!(is.na(bEdges[L]) | is.infinite(bEdges[L])))
+    warning("Top bin is bounded. Expect inaccurate results.\n")
   if(is.null(m)) { # no mean provided, so make one up
-    L <- length(bCounts)
+    warning("No mean provided: expect inaccurate results.\n")
     m <- sum(0.5*(c(bEdges[1:(L-1)],2.0*bEdges[L-1])+c(0, bEdges[1:(L-1)]))*bCounts/sum(bCounts))
   }
   tailShape <- match.arg(tailShape)
