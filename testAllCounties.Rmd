@@ -1,0 +1,33 @@
+---
+title: "Test splinebins on all counties"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Compute splinebin fits for all ACS counties
+
+The following code block runs through all counties to locate bad fits. A fit is bad if its inverse CDF does not predict a median in the correct bin. Warning messages have been suppressed, but otherwise each bad fit would generate a warning message. Less that 1% of US counties produced bad fits (version 0.2.1).
+
+```{r, warning=FALSE}
+library(binsmooth)
+data(county_bins)
+fps <- unique(county_bins$fips)
+badFits <- logical(length(fps))
+for (f in fps) {
+  binedges <- county_bins$bin_max[county_bins$fips==f]+0.5 # continuity correction
+  bincounts <- county_bins$households[county_bins$fips==f]
+  smean <- county_true$mean_true[county_true$fips==f]
+  sbf <- splinebins(binedges, bincounts, smean)
+  badFits[which(fps == f)] <- sbf$fitWarn
+  # cat("Fips: ", f, " Median: ", sb_percentiles(sbf, p = 50), "\n")
+}
+
+cat("Found", sum(badFits), "bad fits out of", length(fps), "counties.\n")
+cat("FIPS of bad fits:\n")
+bff <- fps[which(badFits)]
+print(bff)
+```
+

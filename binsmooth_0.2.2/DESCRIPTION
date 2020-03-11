@@ -24,3 +24,4 @@ Imports: stats, pracma, ineq, triangle
 LazyData: TRUE
 NeedsCompilation: no
 RoxygenNote: 6.1.1
+Packaged: 2019-10-26 23:15:43 UTC; dhunter
