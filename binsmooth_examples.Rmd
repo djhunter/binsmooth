@@ -1,13 +1,13 @@
 ---
-title: "Binsmooth version 0.2.1 Examples"
+title: "Binsmooth version 0.2.2 Examples"
 author: "David J. Hunter"
-date: "October 26, 2019"
+date: "March 11, 2020"
 output: html_document
 ---
 
 ```{r}
 library(binsmooth)
 library(devtools)
-run_examples("binsmooth_0.2.1")
+run_examples("binsmooth_0.2.2")
 ```
 

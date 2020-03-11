@@ -61,7 +61,11 @@ splinebins <- function(bEdges, bCounts, m=NULL, numIterations=16, monoMethod=c("
   }
   median_bin <- which(cumsum(bCounts) > sum(bCounts)/2)[1]
   med_fit <- splineInvCDF(0.5)
-  fitWarn <- (med_fit < bEdges[median_bin-1]) | (med_fit > bEdges[median_bin])
+  if (median_bin == 1) {
+    fitWarn <- (med_fit < 0) | (med_fit > bEdges[1])
+  } else {
+    fitWarn <- (med_fit < bEdges[median_bin-1]) | (med_fit > bEdges[median_bin])
+  }
   if(fitWarn)
     warning("Inaccurate fit detected. Proceed with caution.\n")
   return(list(splinePDF=splinePDF, 

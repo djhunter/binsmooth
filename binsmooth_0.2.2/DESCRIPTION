@@ -1,7 +1,7 @@
 Package: binsmooth
 Type: Package
 Title: Generate PDFs and CDFs from Binned Data
-Version: 0.2.1
+Version: 0.2.2
 Author: David J. Hunter and McKalie Drown
 Maintainer: Dave Hunter <dhunter@westmont.edu>
 Description: Provides several methods for generating density functions
@@ -24,4 +24,3 @@ Imports: stats, pracma, ineq, triangle
 LazyData: TRUE
 NeedsCompilation: no
 RoxygenNote: 6.1.1
-Packaged: 2019-10-26 23:15:43 UTC; dhunter

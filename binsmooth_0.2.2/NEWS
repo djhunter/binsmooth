@@ -1,3 +1,10 @@
+Changes in Version 0.2.2
+========================
+
+Update: 
+
+* Fixed bug in splinebins warning when median falls in the first bin.
+
 Changes in Version 0.2.1
 ========================
 

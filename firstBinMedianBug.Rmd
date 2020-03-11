@@ -1,0 +1,53 @@
+---
+title: "Testing bugfix in version 0.2.2"
+author: "David J. Hunter"
+date: "March 11, 2020"
+output: html_document
+---
+
+# Testing the inverse CDF
+
+The CDF is in blue, and its inverse is purple. Below, we use `sb_sample` to draw a sample of 200000 points, and then compare that (in black) to the `splinePDF` (in red).
+
+## Cook County data
+
+```{r}
+library(binsmooth)
+library(ggplot2)
+binedges <- c(10000,15000,20000,25000,30000,35000,40000,45000,
+50000,60000,75000,100000,125000,150000,200000,NA)
+bincounts <- c(157532,97369,102673,100888,90835,94191,87688,90481,
+79816,153581,195430,240948,155139,94527,92166,103217)
+splinefit <- splinebins(binedges, bincounts, 76091)
+ggplot(data.frame(x = c(0,splinefit$E)), aes(x)) + 
+  stat_function(fun = splinefit$splineCDF, n = 1000, color="blue")
+ggplot(data.frame(x = c(0,1)), aes(x)) + 
+  stat_function(fun = splinefit$splineInvCDF, n = 1000, color="purple")
+df <- data.frame(x = sb_sample(splinefit,200000))
+ggplot(df) + 
+  geom_density(aes(x=x)) + 
+  stat_function(fun = splinefit$splinePDF, color="red",n=1000) + 
+  xlim(0,splinefit$E)
+```
+
+## What happens if the median is in the first bin?
+
+In Version 0.2.1, the following code block generates `Error in if (fitWarn) warning("Inaccurate fit detected. Proceed with caution.\n") : argument is of length zero`. Fixed in Version 0.2.2.
+
+```{r}
+binedges <- c(10000,15000,20000,25000,30000,35000,40000,45000,
+50000,60000,75000,100000,125000,150000,200000,NA)
+bincounts <- c(2000,100,100,100,100,100,100,100,
+100,100,100,100,100,100,100,100)
+splinefit <- splinebins(binedges, bincounts)
+samp <- sb_sample(splinefit,200000)
+df <- data.frame(x = samp)
+ggplot(df) + 
+  geom_density(aes(x=x)) + 
+  stat_function(fun = splinefit$splinePDF, color="red",n=1000) + 
+  xlim(0,splinefit$E)
+median(samp)
+mean(samp)
+sb_percentiles(splinefit)
+```
+
