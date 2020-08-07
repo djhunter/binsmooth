@@ -3,7 +3,7 @@ An R package for smoothing binned data, available on CRAN.
 
 This package provides several methods for generating density functions based on binned data. Methods include step function, recursive
 subdivision, and optimized spline. Data are assumed to be nonnegative, 
-the top bin is assumed to have no upper bound, but the bin widths need
+the top bin is assumed to have no upper bound, but the bin widths need not
 be equal. All PDF smoothing methods maintain the areas specified by 
 the binned data. (Equivalently, all CDF smoothing methods interpolate 
 the points specified by the binned data.) In practice, an estimate for 
