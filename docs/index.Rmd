@@ -1,0 +1,36 @@
+---
+title: "Smoothing binned data with binsmooth"
+output:
+  html_document:
+    toc: false
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+    df_print: paged
+    theme: spacelab
+---
+
+```{r, echo=FALSE}
+library(metathis)
+meta() %>%
+  meta_description(
+    "Some links to resources for smoothing binnned data."
+  ) %>%
+  meta_name("github-repo" = "djhunter/binsmooth") %>%
+  meta_viewport() %>%
+  meta_social(
+    title = "Smoothing binned data with binsmooth",
+    url = "https://djhunter.github.io/binsmooth/index.html",
+    image = "https://cran.r-project.org/Rlogo.svg",
+    image_alt = "R Logo",
+    og_author = c("David J. Hunter")
+  )
+```
+
+### Resources
+
+- [Slides for 8/20/2020 Santa Barbara R Users Group talk](rmeetup_2020_08_20.html)
+- [Paper in Sociological Science](https://sociologicalscience.com/articles-v4-26-641/)
+- [GitHub repository of package code](https://github.com/djhunter/binsmooth)
+- [binsmooth on CRAN](https://cran.r-project.org/package=binsmooth) 
+

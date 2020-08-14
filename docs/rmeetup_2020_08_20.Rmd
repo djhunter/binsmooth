@@ -1,0 +1,65 @@
+---
+title: "Binsmoothing and the Joys and Perils of CRAN"
+date: "August 20, 2020"
+author: "David J. Hunter, Westmont College"
+output: 
+  revealjs::revealjs_presentation:
+    fig_width: 14
+    fig_height: 7
+    self_contained: true
+    theme: night
+    highlight: zenburn
+    css: slidesdjh.css
+    center: false
+    transition: slide
+    reveal_options:
+      controls: true
+      progress: false
+      width: 960
+      height: 540
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+    df_print: paged
+    theme: spacelab
+---
+
+# Introduction
+
+## These slides are available online
+
+HTML Slides and related information can be found at: https://djhunter.github.io/binsmooth/
+
+## Outline
+
+- Smoothing binned data
+    - The problem: measuring *income inequality* from census data.
+    - Our idea: Smooth the bins to get a PDF.
+- R lessons I learned
+    - Using R with students
+    - Submitting to CRAN
+    - Using CRAN packages
+- Discussion
+    - Questions?
+    - Share your CRAN stories.
+    - How do you pronounce CRAN?
+    
+# Smoothing binned data
+
+## Measuring income inequality 
+
+## Census data is binned
+
+## Smooth the bins to get a PDF.
+
+# R lessons I learned
+    
+## Using R with students
+
+## Submitting to CRAN
+
+## Using CRAN packages
+    
+## Discussion
