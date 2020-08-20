@@ -113,7 +113,8 @@ county_bins %>%
 
 ACS binned data ➡ Approximated PDF ➡ Gini (from integral)
 
-- Tested 3 methods: Step function, Recursive subdivision, Splines
+- Previous work tried to fit parametric distributions to the bins. 
+- Tested 3 *smoothing* methods: Step function, Recursive subdivision, Splines
 - For the counties in `county_bins`, the Census Bureau computed the *actual Gini's* from raw data!
     - Can compare our approximated Gini's with the actual Gini's to evaluate which method works best.
 - *Every method works better if we also know the mean income.* These are in `county_true`. Since the top bin is unbounded, we adjust the tail of the PDF to fit the mean.
@@ -157,6 +158,13 @@ ggplot(data.frame(x=c(0,rs$E)), aes(x=x)) +  stat_function(fun = rs$rsubPDF, n=5
 - Better: *Spline the CDF*, then differentiate!
     - Monotone functions spline better.
     - Also: preserves bin area, by construction.
+    - Also: Gini (and mean) can be calculated from the CDF $F(x)$:
+
+$$
+ G =  1- \frac{1}{\mu} \int_0^{\infty} (1 - F(x))^2 \, dx  \\
+\mu = \int_0^\infty (1 - F(x)) \, dx 
+$$
+(because $f(x)$ has nonnegative support)
     
 ## PDF from splined CDF
 
@@ -268,12 +276,39 @@ crtSolve <- function(a, m){
 
 My experience:
 
-- Anyone can do it. Just be sure to follow all [the rules](https://cran.r-project.org/web/packages/policies.html).
-- Publishing a CRAN package is a great way to get people to notice your work.
-- However, people who use your package won't necessarily [read your paper](https://sociologicalscience.com/articles-v4-26-641/).
-    - Include **warnings** when users are doing it wrong.
-- Watch out when you use CRAN packages.
+>- Very reasonable process. Just be sure to follow all [the rules](https://cran.r-project.org/web/packages/policies.html).
+>- Publishing a CRAN package is a great way to get people to notice your work.
+>- However, people who use your package won't necessarily [read your paper](https://sociologicalscience.com/articles-v4-26-641/).
+>    - Include **warnings** when users are doing it wrong.
+>- People will ask you to add functionality. You might break something.
+>- Corollary: Watch out when you use CRAN packages.
     
+## Choosing an interface
+
+- Probably you should think harder than I did about this.
+- Arguments: right endpoints of each bin, counts, mean (optional)
+- Returns: a list
+- For example, see the [stepbins documentation](https://www.rdocumentation.org/packages/binsmooth/versions/0.2.2/topics/stepbins).
+
+```{r eval=FALSE}
+stepbins <- function(bEdges, bCounts, m=NULL, tailShape = c("onebin", "pareto", "exponential"),
+                     nTail=16, numIterations=20, pIndex=1.160964, tbRatio=0.8) {
+  L <- length(bCounts)
+  if(!(is.na(bEdges[L]) | is.infinite(bEdges[L])))
+    warning("Top bin is bounded. Expect inaccurate results.\n")
+  if(is.null(m)) { # no mean provided, so make one up
+    warning("No mean provided: expect inaccurate results.\n")
+    m <- sum(0.5*(c(bEdges[1:(L-1)],2.0*bEdges[L-1])+c(0, bEdges[1:(L-1)]))*bCounts/sum(bCounts))
+  }
+  tailShape <- match.arg(tailShape)
+  if(tailShape == "onebin")
+    stepbinsNotail(bEdges, bCounts, m)
+  else
+    stepbinsTail(bEdges, bCounts, m, tailShape, nTail, numIterations, pIndex, tbRatio)
+}
+```
+
+
 ## Discussion
 
 - Questions?

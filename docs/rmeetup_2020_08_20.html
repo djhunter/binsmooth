@@ -2051,7 +2051,8 @@ G = \frac{1}{2n^2\bar{x}} \sum_{j=1}^n \sum_{i=1}^n |x_i - x_j|
 <h2>Smooth the bins to get a PDF</h2>
 <p>ACS binned data ➡ Approximated PDF ➡ Gini (from integral)</p>
 <ul>
-<li>Tested 3 methods: Step function, Recursive subdivision, Splines</li>
+<li>Previous work tried to fit parametric distributions to the bins.</li>
+<li>Tested 3 <em>smoothing</em> methods: Step function, Recursive subdivision, Splines</li>
 <li>For the counties in <code>county_bins</code>, the Census Bureau computed the <em>actual Gini’s</em> from raw data!
 <ul>
 <li>Can compare our approximated Gini’s with the actual Gini’s to evaluate which method works best.</li>
@@ -2089,8 +2090,13 @@ G = \frac{1}{2n^2\bar{x}} \sum_{j=1}^n \sum_{i=1}^n |x_i - x_j|
 <ul>
 <li>Monotone functions spline better.</li>
 <li>Also: preserves bin area, by construction.</li>
+<li>Also: Gini (and mean) can be calculated from the CDF <span class="math inline">\(F(x)\)</span>:</li>
 </ul></li>
 </ul>
+<p><span class="math display">\[
+ G =  1- \frac{1}{\mu} \int_0^{\infty} (1 - F(x))^2 \, dx  \\
+\mu = \int_0^\infty (1 - F(x)) \, dx 
+\]</span> (because <span class="math inline">\(f(x)\)</span> has nonnegative support)</p>
 </section><section id="pdf-from-splined-cdf" class="slide level2">
 <h2>PDF from splined CDF</h2>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>county_all <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(county <span class="op">==</span><span class="st"> &quot;Santa Barbara County&quot;</span>) <span class="op">%$%</span><span class="st"> </span></span>
@@ -2217,14 +2223,38 @@ G = \frac{1}{2n^2\bar{x}} \sum_{j=1}^n \sum_{i=1}^n |x_i - x_j|
 </blockquote>
 <p>My experience:</p>
 <ul>
-<li>Anyone can do it. Just be sure to follow all <a href="https://cran.r-project.org/web/packages/policies.html">the rules</a>.</li>
-<li>Publishing a CRAN package is a great way to get people to notice your work.</li>
-<li>However, people who use your package won’t necessarily <a href="https://sociologicalscience.com/articles-v4-26-641/">read your paper</a>.
+<li class="fragment">Very reasonable process. Just be sure to follow all <a href="https://cran.r-project.org/web/packages/policies.html">the rules</a>.</li>
+<li class="fragment">Publishing a CRAN package is a great way to get people to notice your work.</li>
+<li class="fragment">However, people who use your package won’t necessarily <a href="https://sociologicalscience.com/articles-v4-26-641/">read your paper</a>.
 <ul>
-<li>Include <strong>warnings</strong> when users are doing it wrong.</li>
+<li class="fragment">Include <strong>warnings</strong> when users are doing it wrong.</li>
 </ul></li>
-<li>Watch out when you use CRAN packages.</li>
+<li class="fragment">People will ask you to add functionality. You might break something.</li>
+<li class="fragment">Corollary: Watch out when you use CRAN packages.</li>
 </ul>
+</section><section id="choosing-an-interface" class="slide level2">
+<h2>Choosing an interface</h2>
+<ul>
+<li>Probably you should think harder than I did about this.</li>
+<li>Arguments: right endpoints of each bin, counts, mean (optional)</li>
+<li>Returns: a list</li>
+<li>For example, see the <a href="https://www.rdocumentation.org/packages/binsmooth/versions/0.2.2/topics/stepbins">stepbins documentation</a>.</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>stepbins &lt;-<span class="st"> </span><span class="cf">function</span>(bEdges, bCounts, <span class="dt">m=</span><span class="ot">NULL</span>, <span class="dt">tailShape =</span> <span class="kw">c</span>(<span class="st">&quot;onebin&quot;</span>, <span class="st">&quot;pareto&quot;</span>, <span class="st">&quot;exponential&quot;</span>),</span>
+<span id="cb7-2"><a href="#cb7-2"></a>                     <span class="dt">nTail=</span><span class="dv">16</span>, <span class="dt">numIterations=</span><span class="dv">20</span>, <span class="dt">pIndex=</span><span class="fl">1.160964</span>, <span class="dt">tbRatio=</span><span class="fl">0.8</span>) {</span>
+<span id="cb7-3"><a href="#cb7-3"></a>  L &lt;-<span class="st"> </span><span class="kw">length</span>(bCounts)</span>
+<span id="cb7-4"><a href="#cb7-4"></a>  <span class="cf">if</span>(<span class="op">!</span>(<span class="kw">is.na</span>(bEdges[L]) <span class="op">|</span><span class="st"> </span><span class="kw">is.infinite</span>(bEdges[L])))</span>
+<span id="cb7-5"><a href="#cb7-5"></a>    <span class="kw">warning</span>(<span class="st">&quot;Top bin is bounded. Expect inaccurate results.</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb7-6"><a href="#cb7-6"></a>  <span class="cf">if</span>(<span class="kw">is.null</span>(m)) { <span class="co"># no mean provided, so make one up</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a>    <span class="kw">warning</span>(<span class="st">&quot;No mean provided: expect inaccurate results.</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb7-8"><a href="#cb7-8"></a>    m &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="fl">0.5</span><span class="op">*</span>(<span class="kw">c</span>(bEdges[<span class="dv">1</span><span class="op">:</span>(L<span class="dv">-1</span>)],<span class="fl">2.0</span><span class="op">*</span>bEdges[L<span class="dv">-1</span>])<span class="op">+</span><span class="kw">c</span>(<span class="dv">0</span>, bEdges[<span class="dv">1</span><span class="op">:</span>(L<span class="dv">-1</span>)]))<span class="op">*</span>bCounts<span class="op">/</span><span class="kw">sum</span>(bCounts))</span>
+<span id="cb7-9"><a href="#cb7-9"></a>  }</span>
+<span id="cb7-10"><a href="#cb7-10"></a>  tailShape &lt;-<span class="st"> </span><span class="kw">match.arg</span>(tailShape)</span>
+<span id="cb7-11"><a href="#cb7-11"></a>  <span class="cf">if</span>(tailShape <span class="op">==</span><span class="st"> &quot;onebin&quot;</span>)</span>
+<span id="cb7-12"><a href="#cb7-12"></a>    <span class="kw">stepbinsNotail</span>(bEdges, bCounts, m)</span>
+<span id="cb7-13"><a href="#cb7-13"></a>  <span class="cf">else</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a>    <span class="kw">stepbinsTail</span>(bEdges, bCounts, m, tailShape, nTail, numIterations, pIndex, tbRatio)</span>
+<span id="cb7-15"><a href="#cb7-15"></a>}</span></code></pre></div>
 </section><section id="discussion" class="slide level2">
 <h2>Discussion</h2>
 <ul>
